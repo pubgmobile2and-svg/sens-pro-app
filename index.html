@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PUBG Sensitivity Pro 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        /* إخفاء عناصر القالب */
+        .post-title, .entry-title, .post-header, .author-info, .updated-date, .post-meta { display: none !important; }
+        #main, .main-wrapper, .post-body { padding: 0 !important; margin: 0 !important; }
+
+        body { 
+            background-color: #e6eef4; 
+            font-family: 'Cairo', sans-serif; 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            overflow-x: hidden;
+        }
+
+        /* --- شاشة الترحيب (Splash Screen) --- */
+        #splash-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #e6eef4; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 9999;
+            transition: opacity 0.8s ease;
+        }
+        .splash-logo {
+            width: 100px; height: 100px; background: #e6eef4; border-radius: 30px;
+            box-shadow: 15px 15px 30px #beccd8, -15px -15px 30px #ffffff;
+            display: flex; justify-content: center; align-items: center;
+            animation: pulse 1.5s infinite;
+        }
+        .splash-logo span { font-size: 40px; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+        /* حاوية الأداة */
+        .glacier-container {
+            width: 92vw; max-width: 380px; 
+            background: #e6eef4; 
+            border-radius: 40px; 
+            padding: 25px;
+            box-shadow: 20px 20px 60px #beccd8, -20px -20px 60px #ffffff;
+            margin: 30px auto 20px; 
+            display: flex; flex-direction: column; gap: 18px; 
+            box-sizing: border-box;
+            opacity: 0; transform: translateY(20px);
+            transition: 1s ease forwards;
+        }
+
+        .header-box {
+            background: #e6eef4; padding: 15px; border-radius: 20px; text-align: center;
+            box-shadow: 8px 8px 16px #beccd8, -8px -8px 16px #ffffff; border: 1px solid rgba(255,255,255,0.8);
+        }
+        .header-box h1 { font-size: 1.2rem; color: #2c3e50; margin: 0; font-weight: 900; }
+
+        .step-label { font-size: 0.85rem; color: #5d6d7e; font-weight: 800; margin-bottom: 5px; display: block; }
+
+        .neo-input {
+            width: 100%; padding: 15px; border: none; border-radius: 20px; background: #e6eef4;
+            box-shadow: inset 8px 8px 16px #beccd8, inset -8px -8px 16px #ffffff;
+            font-family: 'Cairo'; font-weight: 700; text-align: center; outline: none; box-sizing: border-box;
+        }
+
+        #error-msg { display: none; color: #e74c3c; font-size: 0.75rem; text-align: center; margin-top: -10px; font-weight: 900; animation: shake 0.3s; }
+        @keyframes shake { 0%,100% {transform:translateX(0)} 25% {transform:translateX(-5px)} 75% {transform:translateX(5px)} }
+
+        .system-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .system-btn { padding: 14px; border: none; border-radius: 20px; background: #e6eef4; box-shadow: 8px 8px 16px #beccd8, -8px -8px 16px #ffffff; color: #7f8c8d; font-weight: 800; cursor: pointer; }
+        .system-btn.active { box-shadow: inset 6px 6px 12px #beccd8, inset -6px -6px 12px #ffffff; color: #009ffd; }
+
+        .fps-bar { display: flex; background: #e6eef4; padding: 6px; border-radius: 25px; box-shadow: inset 10px 10px 20px #beccd8, inset -10px -10px 20px #ffffff; }
+        .fps-opt { flex: 1; text-align: center; padding: 12px; font-weight: 900; cursor: pointer; border-radius: 20px; color: #7f8c8d; }
+        .fps-opt.active { background: linear-gradient(145deg, #00d2ff, #3a7bd5); color: white; box-shadow: 4px 4px 10px rgba(0, 159, 253, 0.3); }
+
+        #result-area { display: none; background: #1a252f; border-radius: 25px; padding: 20px; text-align: center; box-shadow: inset 6px 6px 15px #000; margin-bottom: 10px; }
+        .loader { display: none; width: 25px; height: 25px; border: 3px solid #f3f3f3; border-top: 3px solid #00d2ff; border-radius: 50%; margin: 0 auto 10px; animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .main-btn { width: 100%; padding: 20px; border: none; border-radius: 25px; background: linear-gradient(145deg, #2c3e50, #1a252f); color: #00d2ff; font-size: 1.1rem; font-weight: 900; box-shadow: 10px 10px 20px #beccd8, -10px -10px 20px #ffffff; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+        
+        /* الروابط القانونية */
+        .legal-footer { margin-top: 20px; text-align: center; font-size: 0.7rem; color: #95a5a6; width: 90%; }
+        .legal-footer a { color: #00d2ff; text-decoration: none; font-weight: bold; margin: 0 5px; }
+
+        .seo-description {
+            width: 92vw; max-width: 380px; 
+            background: #e6eef4; border-radius: 25px; padding: 25px;
+            box-shadow: 12px 12px 24px #beccd8, -12px -12px 24px #ffffff;
+            margin: 20px auto 50px; color: #5d6d7e; font-size: 0.85rem; line-height: 1.8; 
+            text-align: center; box-sizing: border-box;
+        }
+
+        #copy-btn { color:#00d2ff; font-size:0.8rem; cursor:pointer; margin-top:10px; text-decoration:underline; display:none; }
+    </style>
+</head>
+<body>
+
+<div id="splash-screen">
+    <div class="splash-logo">
+        <span>🎮</span>
+    </div>
+    <h2 style="color: #2c3e50; margin-top: 20px;">PUBG SENSITIVITY</h2>
+    <p style="color: #7f8c8d; font-size: 0.8rem;">Loading Database...</p>
+</div>
+
+<div class="glacier-container" id="mainContainer">
+    <div class="header-box">
+        <h1>مولد حساسية PUBG</h1>
+    </div>
+
+    <div id="result-area">
+        <div class="loader" id="loading"></div>
+        <div id="final-code" style="color:#fff; font-size:1.4rem; font-weight:900; letter-spacing:1px; word-break: break-all;"></div>
+        <div onclick="copyText()" id="copy-btn">نسخ الكود</div>
+    </div>
+
+    <div>
+        <label class="step-label">1. أدخل اسم جهازك:</label>
+        <input type="text" class="neo-input" id="deviceName" placeholder="مثلاً: iPhone 15 Pro Max">
+        <div id="error-msg">الرجاء إدخال اسم الجهاز للمتابعة!</div>
+    </div>
+
+    <div>
+        <label class="step-label">2. اختر نظام التشغيل:</label>
+        <div class="system-grid">
+            <button class="system-btn s-opt active" onclick="pick('s-opt', this)">ANDROID</button>
+            <button class="system-btn s-opt" onclick="pick('s-opt', this)">IOS</button>
+        </div>
+    </div>
+
+    <div>
+        <label class="step-label">3. معدل الإطارات:</label>
+        <div class="fps-bar">
+            <div class="fps-opt f-opt" onclick="pick('f-opt', this)">40</div>
+            <div class="fps-opt f-opt active" onclick="pick('f-opt', this)">60</div>
+            <div class="fps-opt f-opt" onclick="pick('f-opt', this)">90</div>
+            <div class="fps-opt f-opt" onclick="pick('f-opt', this)">120</div>
+        </div>
+    </div>
+
+    <button class="main-btn" onclick="generate()">إنشاء كود الحساسية</button>
+
+    <div class="legal-footer">
+        <a href="#" onclick="alert('Privacy Policy: We do not collect any personal data.')">Privacy Policy</a> | 
+        <a href="#" onclick="alert('Disclaimer: This is a helper tool, not affiliated with Tencent or PUBG Mobile.')">Disclaimer</a>
+    </div>
+</div>
+
+<div class="seo-description">
+    <h2>كيفية استخدام مولد حساسية PUBG؟</h2>
+    <p>
+        تعتبر أداة <strong>مولد حساسية PUBG</strong> الحل الأمثل للاعبين الباحثين عن أفضل كود حساسية ببجي موبايل لتثبيت الإيم (Recoil Control).
+    </p>
+</div>
+
+<script>
+    // تفعيل شاشة الترحيب وتأثير الظهور
+    window.onload = () => {
+        setTimeout(() => {
+            document.getElementById('splash-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('splash-screen').style.display = 'none';
+                document.getElementById('mainContainer').style.opacity = '1';
+                document.getElementById('mainContainer').style.transform = 'translateY(0)';
+            }, 800);
+        }, 2000);
+    }
+
+    let lastCode = ""; 
+
+    function pick(cls, el) {
+        document.querySelectorAll('.'+cls).forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    async function generate() {
+        const dev = document.getElementById('deviceName');
+        const err = document.getElementById('error-msg');
+        if(!dev.value.trim()) { err.style.display = "block"; dev.focus(); return; }
+        
+        err.style.display = "none";
+        const resArea = document.getElementById('result-area');
+        const loader = document.getElementById('loading');
+        const output = document.getElementById('final-code');
+        const copyBtn = document.getElementById('copy-btn');
+
+        resArea.style.display = "block";
+        loader.style.display = "block";
+        output.innerText = ""; 
+        copyBtn.style.display = "none"; 
+
+        setTimeout(async () => {
+            try {
+                const r = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vTRvEMgQkRx9FutTjTlG0_kv1WKg-b31QM1LibOvpbIFwoWEWgorHoGXiLEifh5a4bNwGXIUs0YHs3e/pub?gid=0&single=true&output=csv');
+                const d = await r.text();
+                let lines = d.split('\n').map(l => l.trim()).filter(l => l !== "" && !l.includes("كود"));
+                
+                let newCode = "";
+                if (lines.length > 0) {
+                    do {
+                        newCode = lines[Math.floor(Math.random() * lines.length)];
+                    } while (newCode === lastCode && lines.length > 1);
+                    
+                    lastCode = newCode;
+                    loader.style.display = "none";
+                    output.innerText = newCode;
+                    copyBtn.innerText = "نسخ الكود";
+                    copyBtn.style.display = "inline-block"; 
+                }
+            } catch(e) {
+                loader.style.display = "none";
+                output.innerText = "7350-2566-0703-9037-705"; // كود احتياطي
+                copyBtn.style.display = "inline-block";
+            }
+        }, 1200); // زيادة بسيطة في وقت التحميل ليعطي إحساساً بالدقة
+    }
+
+    function copyText() {
+        const text = document.getElementById('final-code').innerText;
+        if(!text || text === "") return;
+        navigator.clipboard.writeText(text);
+        const copyBtn = document.getElementById('copy-btn');
+        copyBtn.innerText = "تم النسخ بنجاح!";
+        setTimeout(() => { copyBtn.innerText = "نسخ الكود"; }, 2000);
+    }
+</script>
+</body>
+</html>
