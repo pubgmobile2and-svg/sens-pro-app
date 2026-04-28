@@ -4,227 +4,186 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SENSY PRO VIP</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0f1113;
-            --card-bg: #1c1f26;
-            --accent-gold: linear-gradient(145deg, #d4af37, #b8860b);
-            --gold-text: #d4af37;
-            --gray-text: #8e9297;
-            --safe-area-bottom: env(safe-area-inset-bottom);
+            --bg: #0b0d0f;
+            --card: #16181c;
+            --gold: #d4af37;
+            --gold-grad: linear-gradient(135deg, #e6c667 0%, #b8860b 100%);
         }
 
-        body {
-            background-color: var(--bg-color);
-            color: white;
-            font-family: 'Cairo', sans-serif;
-            margin: 0;
-            padding: 20px 15px 100px;
-            overflow-x: hidden;
+        body { background-color: var(--bg); color: #fff; font-family: 'Cairo', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
+
+        /* نظام إدارة الصفحات */
+        .page { display: none; width: 100vw; min-height: 100vh; padding: 25px 16px 100px; box-sizing: border-box; position: absolute; top: 0; left: 0; }
+        .active-page { display: block; animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* التصميم العام والبطاقات */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .vip-tag { background: var(--gold-grad); color: #000; padding: 4px 12px; border-radius: 10px; font-size: 0.65rem; font-weight: 900; }
+        
+        .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+        .main-card {
+            background: linear-gradient(180deg, #1d2026 0%, #16181c 100%);
+            border-radius: 25px; padding: 25px; text-align: center; border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+        .main-card i { font-size: 2.2rem; display: block; margin-bottom: 12px; }
+
+        /* التنسيق الداخلي للصفحات الفرعية */
+        .back-nav { color: var(--gold); cursor: pointer; margin-bottom: 30px; font-weight: 900; display: flex; align-items: center; gap: 5px; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; color: var(--gold); margin-bottom: 8px; font-size: 0.8rem; }
+        .neo-input {
+            width: 100%; background: #16181c; border: 1px solid #333; padding: 15px;
+            border-radius: 15px; color: #fff; font-family: 'Cairo'; box-sizing: border-box;
+        }
+        .btn-action {
+            width: 100%; background: var(--gold-grad); color: #000; border: none;
+            padding: 18px; border-radius: 18px; font-weight: 900; cursor: pointer;
         }
 
-        /* Header */
-        .app-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
+        /* بطاقات الاستراتيجية */
+        .strategy-item {
+            background: #16181c; border-radius: 20px; padding: 20px; margin-bottom: 15px;
+            border-right: 4px solid var(--gold);
         }
-        .logo-area h1 { font-size: 1.2rem; margin: 0; font-weight: 900; }
-        .logo-area p { font-size: 0.75rem; color: var(--gray-text); margin: 0; }
-        .vip-tag { background: var(--accent-gold); color: black; padding: 4px 12px; border-radius: 8px; font-weight: 900; font-size: 0.7rem; }
+        .strategy-item h4 { margin: 0 0 8px; color: var(--gold); }
+        .strategy-item p { margin: 0; font-size: 0.85rem; color: #aaa; line-height: 1.6; }
 
-        /* Main Sections Grid */
-        .grid-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 30px;
+        /* قائمة المشاهير */
+        .celeb-card {
+            background: var(--card); border-radius: 20px; padding: 15px; margin-bottom: 12px;
+            display: flex; align-items: center; gap: 12px; border: 1px solid rgba(255,255,255,0.05);
         }
-        .main-action-card {
-            background: linear-gradient(145deg, #23272f, #1c1f26);
-            border-radius: 25px;
-            padding: 20px;
-            text-align: center;
-            border: 1px solid rgba(212, 175, 55, 0.15);
-            position: relative;
-        }
-        .main-action-card h3 { font-size: 0.9rem; margin: 10px 0 5px; color: var(--gold-text); }
-        .main-action-card p { font-size: 0.65rem; color: var(--gray-text); margin: 0; line-height: 1.3; }
-        .card-icon { font-size: 2rem; }
+        .celeb-img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--gold); }
+        .copy-small { background: var(--gold); border: none; padding: 6px 12px; border-radius: 8px; font-weight: 900; font-size: 0.7rem; }
 
-        /* Section Title */
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 900;
-            color: var(--gold-text);
-            margin-bottom: 20px;
-            font-size: 1.1rem;
-        }
-
-        /* Celebrity Library Card */
-        .celeb-item {
-            background: var(--card-bg);
-            border-radius: 25px;
-            padding: 18px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .celeb-info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
-        .profile-box { display: flex; align-items: center; gap: 12px; }
-        .profile-box img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--gold-text); object-fit: cover; }
-        .name-meta h4 { margin: 0; font-size: 1rem; font-weight: 900; }
-        .status-dot { color: #4caf50; font-size: 0.65rem; display: flex; align-items: center; gap: 4px; }
-
-        /* Code Copy Area */
-        .copy-container {
-            background: #121417;
-            border-radius: 15px;
-            padding: 12px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .code-val { font-family: 'Courier New', monospace; font-weight: 700; letter-spacing: 1px; font-size: 1rem; }
-        .btn-copy {
-            background: var(--accent-gold);
-            color: black;
-            border: none;
-            padding: 8px 18px;
-            border-radius: 10px;
-            font-weight: 900;
-            font-size: 0.8rem;
-            cursor: pointer;
-        }
-
-        .stats-row {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 12px;
-            font-size: 0.7rem;
-            color: var(--gray-text);
-        }
-
-        /* Bottom Navigation */
-        .nav-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(28, 31, 38, 0.95);
-            backdrop-filter: blur(10px);
-            display: flex;
-            justify-content: space-around;
-            padding: 15px 0 calc(15px + var(--safe-area-bottom));
-            border-top: 1px solid rgba(255,255,255,0.05);
-            z-index: 100;
-        }
-        .nav-link { text-align: center; color: var(--gray-text); text-decoration: none; font-size: 0.7rem; font-weight: 600; }
-        .nav-link.active { color: var(--gold-text); }
-        .nav-icon { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+        /* شريط التنقل السفلي */
+        .nav-bar { position: fixed; bottom: 0; width: 100%; background: #16181c; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #333; z-index: 1000; }
+        .nav-link { text-align: center; color: #555; font-size: 0.65rem; text-decoration: none; }
+        .nav-link.active { color: var(--gold); }
     </style>
 </head>
 <body>
 
-    <header class="app-header">
-        <div class="logo-area">
-            <h1>سينسي برو - SENSY PRO</h1>
-            <p>دليل الحساسية الأفضل</p>
+    <div id="home" class="page active-page">
+        <div class="header">
+            <h1>SENSY PRO X</h1>
+            <div class="vip-tag">⭐ VIP</div>
         </div>
-        <div class="vip-tag">⭐ VIP</div>
-    </header>
 
-    <div class="grid-container">
-        <div class="main-action-card">
-            <span class="vip-tag" style="position:absolute; top:8px; right:8px; font-size:0.5rem; padding: 2px 6px;">VIP</span>
-            <div class="card-icon">🦾</div>
-            <h3>مولد الحساسية</h3>
-            <p>أنشئ إعدادات مثالية مخصصة لأسلوب لعبك</p>
+        <div class="grid-menu">
+            <div class="main-card" onclick="openPage('gen-page')">
+                <i>⚙️</i>
+                <h3 style="margin:0; font-size:0.8rem; color:var(--gold);">المولد الذكي</h3>
+            </div>
+            <div class="main-card" onclick="openPage('strat-page')">
+                <i>🎯</i>
+                <h3 style="margin:0; font-size:0.8rem; color:var(--gold);">تقليل الارتداد</h3>
+            </div>
         </div>
-        <div class="main-action-card">
-            <span class="vip-tag" style="position:absolute; top:8px; right:8px; font-size:0.5rem; padding: 2px 6px;">VIP</span>
-            <div class="card-icon">🗺️</div>
-            <h3>استراتيجية الارتداد</h3>
-            <p>دليل عملي لتسديدات أكثر ثباتاً</p>
+
+        <div style="color:var(--gold); font-weight:900; margin-bottom:15px;">🏆 مكتبة المشاهير الذهبية</div>
+        <div id="celeb-list"></div>
+    </div>
+
+    <div id="gen-page" class="page">
+        <div class="back-nav" onclick="openPage('home')">🔙 العودة للرئيسية</div>
+        <h2 style="color:var(--gold); margin-top:0;">إعدادات المولد</h2>
+        
+        <div class="input-group">
+            <label>اسم الجهاز</label>
+            <input type="text" id="dName" class="neo-input" placeholder="مثلاً: Galaxy S23 Ultra">
+        </div>
+        <div class="input-group">
+            <label>عدد الفريمات (FPS)</label>
+            <input type="number" id="fpsRate" class="neo-input" placeholder="90">
+        </div>
+        <div class="input-group">
+            <label>نظام التشغيل</label>
+            <select id="osType" class="neo-input">
+                <option>Android</option>
+                <option>iOS</option>
+            </select>
+        </div>
+        <button class="btn-action" onclick="generateNow()">إنشاء كود مخصص</button>
+        <div id="gen-output" style="display:none; text-align:center; margin-top:25px; padding:20px; border:1px dashed var(--gold); border-radius:20px;">
+            <div style="font-size:1.2rem; font-weight:900; letter-spacing:2px;" id="code-box"></div>
+            <button class="btn-action" style="margin-top:10px; font-size:0.8rem; padding:10px;" onclick="copyGenCode()">نسخ الكود</button>
         </div>
     </div>
 
-    <div class="section-header">🏆 مكتبة المشاهير الذهبية</div>
-
-    <div id="celeb-list">
-        <p style="text-align: center; color: var(--gray-text);">جاري تحميل المحتوى الذهبي...</p>
+    <div id="strat-page" class="page">
+        <div class="back-nav" onclick="openPage('home')">🔙 العودة للرئيسية</div>
+        <h2 style="color:var(--gold); margin-top:0;">استراتيجية تقليل الارتداد</h2>
+        
+        <div class="strategy-item">
+            <h4>1. وضعية الثبات</h4>
+            <p>دائماً حاول الإطلاق وأنت في وضعية الانحناء (Crouch)، هذا يقلل الاهتزاز بنسبة كبيرة جداً.</p>
+        </div>
+        <div class="strategy-item">
+            <h4>2. تقنية الـ Jiggle</h4>
+            <p>الحركة يميناً ويساراً بسرعة أثناء الإطلاق تساعد في تشتيت العدو وتثبيت الإيم تلقائياً.</p>
+        </div>
+        <div class="strategy-item">
+            <h4>3. الحساسية العمودية</h4>
+            <p>تأكد من موازنة حساسية الجيروسكوب العمودية لتكون أعلى بـ 10% من الأفقية للتحكم في ارتداد السلاح للأعلى.</p>
+        </div>
     </div>
 
     <nav class="nav-bar">
-        <a href="#" class="nav-link"><span class="nav-icon">⚙️</span>الإعدادات</a>
-        <a href="#" class="nav-link"><span class="nav-icon">⭐</span>المكتبة</a>
-        <a href="#" class="nav-link active"><span class="nav-icon">🏠</span>الرئيسية</a>
+        <div class="nav-link">⚙️<br>الإعدادات</div>
+        <div class="nav-link active">🏠<br>الرئيسية</div>
+        <div class="nav-link">⭐<br>المكتبة</div>
     </nav>
 
     <script>
-        // رابط الشيت الخاص بك (CSV)
-        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTRvEMgQkRx9FutTjTlG0_kv1WKg-b31QM1LibOvpbIFwoWEWgorHoGXiLEifh5a4bNwGXIUs0YHs3e/pub?gid=1626084024&output=csv';
+        const CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTRvEMgQkRx9FutTjTlG0_kv1WKg-b31QM1LibOvpbIFwoWEWgorHoGXiLEifh5a4bNwGXIUs0YHs3e/pub?output=csv';
 
-        async function fetchSensyData() {
-            try {
-                const response = await fetch(SHEET_URL);
-                const data = await response.text();
-                const rows = data.split('\n').slice(1); // تجاهل الهيدر
-                const container = document.getElementById('celeb-list');
-                container.innerHTML = '';
-
-                rows.forEach(row => {
-                    const columns = row.split(',');
-                    if (columns.length < 6) return;
-
-                    const [name, img, code, device, style, rating, count] = columns;
-
-                    container.innerHTML += `
-                        <div class="celeb-item">
-                            <div class="celeb-info-row">
-                                <div class="profile-box">
-                                    <img src="${img.trim()}" alt="${name}">
-                                    <div class="name-meta">
-                                        <h4>${name}</h4>
-                                        <div style="font-size: 0.65rem; color: var(--gray-text); margin-top: 2px;">
-                                            ${device} | ${style}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="status-dot">● متاح الآن</div>
-                            </div>
-                            <div class="copy-container">
-                                <span class="code-val" id="code-${name.replace(/\s/g, '')}">${code}</span>
-                                <button class="btn-copy" onclick="copyCode('code-${name.replace(/\s/g, '')}')">نسخ الكود</button>
-                            </div>
-                            <div class="stats-row">
-                                <span>⭐ ${rating} / 5.0</span>
-                                <span>📥 ${count}k نسخ</span>
-                            </div>
-                        </div>
-                    `;
-                });
-            } catch (error) {
-                document.getElementById('celeb-list').innerHTML = '<p style="color:red; text-align:center;">حدث خطأ في جلب البيانات</p>';
-            }
+        function openPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+            document.getElementById(id).classList.add('active-page');
+            window.scrollTo(0,0);
         }
 
-        function copyCode(id) {
-            const code = document.getElementById(id).innerText;
-            navigator.clipboard.writeText(code).then(() => {
-                alert('تم نسخ الكود الذهبي بنجاح!');
+        async function generateNow() {
+            if(!document.getElementById('dName').value) return alert("املأ البيانات");
+            const res = await fetch(CSV + '&gid=0');
+            const data = await res.text();
+            const codes = data.split('\n').slice(1).filter(c => c.trim() !== "");
+            const final = codes[Math.floor(Math.random() * codes.length)];
+            document.getElementById('code-box').innerText = final;
+            document.getElementById('gen-output').style.display = 'block';
+        }
+
+        async function loadCelebs() {
+            const res = await fetch(CSV + '&gid=1626084024');
+            const data = await res.text();
+            const rows = data.split('\n').slice(1);
+            const list = document.getElementById('celeb-list');
+            rows.forEach(row => {
+                const col = row.split(',');
+                if(col.length < 3) return;
+                list.innerHTML += `
+                    <div class="celeb-card">
+                        <img src="${col[1]}" class="celeb-img">
+                        <div style="flex:1">
+                            <div style="font-weight:900; font-size:0.9rem;">${col[0]}</div>
+                            <div style="font-size:0.6rem; color:#888;">موثق • ${col[3] || 'Mobile'}</div>
+                        </div>
+                        <button class="copy-small" onclick="navigator.clipboard.writeText('${col[2]}'); alert('تم النسخ')">نسخ</button>
+                    </div>`;
             });
         }
 
-        window.onload = fetchSensyData;
+        function copyGenCode() {
+            navigator.clipboard.writeText(document.getElementById('code-box').innerText);
+            alert("تم نسخ الكود الخاص بجهازك!");
+        }
+
+        window.onload = loadCelebs;
     </script>
 </body>
 </html>
