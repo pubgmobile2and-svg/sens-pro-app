@@ -1,470 +1,220 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SENSI PRO</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PUBG Sensitivity App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        /* إعدادات المتصفح العامة */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            background-color: #e6eef4; 
+            font-family: 'Cairo', sans-serif; 
+            margin: 0; padding: 0;
+            overflow-x: hidden;
+        }
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Cairo',sans-serif;
-}
+        /* نظام التنقل بين الصفحات */
+        .app-section { display: none; padding: 20px; animation: fadeIn 0.4s ease; }
+        .app-section.active { display: flex; flex-direction: column; align-items: center; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-body{
-background:#070b14;
-color:#fff;
-min-height:100vh;
-padding:14px;
-}
+        /* شريط العنوان (Header) */
+        .top-bar {
+            width: 100%; padding: 15px; background: #e6eef4;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100;
+        }
+        .back-btn { 
+            padding: 8px 15px; border-radius: 12px; background: #e6eef4;
+            box-shadow: 4px 4px 8px #beccd8, -4px -4px 8px #ffffff;
+            cursor: pointer; font-size: 0.9rem; font-weight: bold; color: #2c3e50;
+        }
 
-.app{
-max-width:420px;
-margin:auto;
-padding-bottom:90px;
-}
+        /* تصميم الكروت في الصفحة الرئيسية */
+        .main-card {
+            width: 90vw; max-width: 380px; padding: 25px; margin-bottom: 20px;
+            background: #e6eef4; border-radius: 30px;
+            box-shadow: 12px 12px 24px #beccd8, -12px -12px 24px #ffffff;
+            text-align: center; cursor: pointer; transition: 0.3s;
+        }
+        .main-card:active { transform: scale(0.95); box-shadow: 4px 4px 8px #beccd8; }
+        .main-card h3 { margin: 10px 0 5px; color: #2c3e50; font-size: 1.2rem; }
+        .main-card p { margin: 0; font-size: 0.85rem; color: #7f8c8d; }
+        .icon-box { font-size: 2.5rem; color: #00d2ff; }
 
-.card{
-background:linear-gradient(180deg,#101826,#0b1220);
-border:1px solid rgba(255,255,255,.05);
-border-radius:24px;
-padding:16px;
-box-shadow:0 0 20px rgba(0,150,255,.08);
-margin-bottom:14px;
-}
-
-.topbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:14px;
-}
-
-.logo{
-font-size:28px;
-font-weight:900;
-letter-spacing:1px;
-}
-
-.logo span{
-color:#6f6cff;
-}
-
-.vip{
-background:linear-gradient(90deg,#f4c95d,#d7a417);
-padding:8px 14px;
-border-radius:50px;
-color:#111;
-font-weight:900;
-font-size:14px;
-}
-
-.hero{
-display:flex;
-gap:12px;
-align-items:center;
-}
-
-.hero img{
-width:120px;
-border-radius:20px;
-}
-
-.heroText h1{
-font-size:28px;
-line-height:1.3;
-margin-bottom:8px;
-}
-
-.heroText p{
-color:#a8b0c2;
-font-size:14px;
-}
-
-.badges{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:10px;
-margin-top:15px;
-}
-
-.badge{
-background:#0d1524;
-padding:10px;
-border-radius:16px;
-text-align:center;
-font-size:12px;
-color:#c6d0e3;
-}
-
-.section-title{
-font-size:20px;
-font-weight:900;
-margin-bottom:14px;
-}
-
-.input{
-width:100%;
-background:#0d1524;
-border:none;
-padding:16px;
-border-radius:18px;
-color:#fff;
-font-size:16px;
-margin-bottom:12px;
-outline:none;
-}
-
-.row{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-margin-bottom:12px;
-}
-
-.btn{
-border:none;
-padding:15px;
-border-radius:18px;
-font-weight:900;
-font-size:16px;
-cursor:pointer;
-background:#121c2c;
-color:#fff;
-}
-
-.btn.active{
-background:linear-gradient(90deg,#287bff,#7d38ff);
-}
-
-.fps{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:10px;
-margin-bottom:12px;
-}
-
-.main-btn{
-width:100%;
-padding:18px;
-border:none;
-border-radius:20px;
-background:linear-gradient(90deg,#24a7ff,#7d38ff);
-font-size:20px;
-font-weight:900;
-color:#fff;
-cursor:pointer;
-margin-top:6px;
-}
-
-.result{
-display:none;
-margin-top:14px;
-}
-
-.code-box{
-background:#09111f;
-padding:16px;
-border-radius:18px;
-text-align:center;
-font-size:23px;
-font-weight:900;
-color:#31d8ff;
-word-break:break-all;
-margin-bottom:10px;
-}
-
-.copy{
-width:100%;
-padding:14px;
-border:none;
-border-radius:16px;
-background:#18263c;
-color:#fff;
-font-weight:900;
-cursor:pointer;
-}
-
-.library-list{
-display:grid;
-gap:12px;
-}
-
-.player{
-display:flex;
-gap:12px;
-align-items:center;
-background:#0d1524;
-padding:12px;
-border-radius:18px;
-}
-
-.player img{
-width:58px;
-height:58px;
-border-radius:50%;
-object-fit:cover;
-}
-
-.player-info{
-flex:1;
-}
-
-.player-info h3{
-font-size:16px;
-margin-bottom:4px;
-}
-
-.player-info p{
-font-size:13px;
-color:#9ba6bc;
-}
-
-.small-btn{
-background:#2a5cff;
-border:none;
-padding:10px 14px;
-border-radius:12px;
-color:#fff;
-font-weight:700;
-cursor:pointer;
-}
-
-.settings-item{
-background:#0d1524;
-padding:15px;
-border-radius:18px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:10px;
-}
-
-.bottom-nav{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-background:#0a101b;
-padding:10px;
-display:flex;
-justify-content:center;
-}
-
-.nav-wrap{
-width:100%;
-max-width:420px;
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:10px;
-}
-
-.nav-btn{
-background:#111a28;
-border:none;
-color:#9ba6bc;
-padding:14px;
-border-radius:18px;
-font-weight:900;
-cursor:pointer;
-}
-
-.nav-btn.active{
-background:linear-gradient(90deg,#287bff,#7d38ff);
-color:#fff;
-}
-
-.page{
-display:none;
-}
-
-.page.active{
-display:block;
-}
-</style>
+        /* تعديلات كود أداتك الأصلي (للمولد الذكي) */
+        .glacier-container {
+            width: 100%; max-width: 380px; background: #e6eef4; 
+            border-radius: 40px; padding: 25px;
+            box-shadow: 20px 20px 60px #beccd8, -20px -20px 60px #ffffff;
+            display: flex; flex-direction: column; gap: 18px;
+        }
+        .neo-input, .system-btn, .fps-bar { /* نفس تنسيقاتك الأصلية */ }
+        /* سأختصر الـ CSS هنا ليظل الكود مفهوماً، استخدم نفس الـ CSS الذي أرسلته أنت */
+        
+        /* نفس تنسيقاتك للأداة */
+        .header-box { background: #e6eef4; padding: 15px; border-radius: 20px; text-align: center; box-shadow: 8px 8px 16px #beccd8, -8px -8px 16px #ffffff; }
+        .step-label { font-size: 0.85rem; color: #5d6d7e; font-weight: 800; display: block; margin-bottom: 5px; }
+        .neo-input { width: 100%; padding: 15px; border: none; border-radius: 20px; background: #e6eef4; box-shadow: inset 8px 8px 16px #beccd8, inset -8px -8px 16px #ffffff; text-align: center; font-family: 'Cairo'; outline: none; }
+        .system-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .system-btn { padding: 14px; border: none; border-radius: 20px; background: #e6eef4; box-shadow: 8px 8px 16px #beccd8, -8px -8px 16px #ffffff; font-weight: 800; color: #7f8c8d; }
+        .system-btn.active { box-shadow: inset 6px 6px 12px #beccd8, inset -6px -6px 12px #ffffff; color: #009ffd; }
+        .fps-bar { display: flex; background: #e6eef4; padding: 6px; border-radius: 25px; box-shadow: inset 10px 10px 20px #beccd8, inset -10px -10px 20px #ffffff; }
+        .fps-opt { flex: 1; text-align: center; padding: 12px; font-weight: 900; border-radius: 20px; color: #7f8c8d; }
+        .fps-opt.active { background: linear-gradient(145deg, #00d2ff, #3a7bd5); color: white; }
+        .main-btn { width: 100%; padding: 20px; border: none; border-radius: 25px; background: linear-gradient(145deg, #2c3e50, #1a252f); color: #00d2ff; font-weight: 900; box-shadow: 10px 10px 20px #beccd8, -10px -10px 20px #ffffff; margin-top: 10px; }
+        #result-area { display: none; background: #1a252f; border-radius: 25px; padding: 20px; text-align: center; margin-bottom: 10px; }
+        #copy-btn { color:#00d2ff; font-size:0.8rem; cursor:pointer; margin-top:10px; text-decoration:underline; display:none; }
+        .loader { display: none; width: 25px; height: 25px; border: 3px solid #f3f3f3; border-top: 3px solid #00d2ff; border-radius: 50%; margin: 0 auto 10px; animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
 </head>
 <body>
 
-<div class="app">
-
-<!-- الرئيسية -->
-<div class="page active" id="home">
-
-<div class="topbar">
-<div class="logo">SENSI <span>PRO</span></div>
-<div class="vip">VIP</div>
+<!-- شريط علوي يظهر فقط داخل الأقسام -->
+<div id="app-header" class="top-bar" style="display: none;">
+    <div class="back-btn" onclick="showSection('home')">← عودة</div>
+    <div style="font-weight: 900; color: #2c3e50;">ببجي هيلبر</div>
 </div>
 
-<div class="card">
-<div class="hero">
-<div class="heroText">
-<h1>صانع الحساسية الذكي PUBG</h1>
-<p>أنشئ كود حساسية احترافي حسب جهازك</p>
-</div>
-<img src="https://i.imgur.com/V7aQG9F.png">
+<!-- 1. الصفحة الرئيسية -->
+<div id="home" class="app-section active">
+    <div class="header-box" style="margin-bottom: 30px; width: 90vw; max-width: 380px;">
+        <h1 style="font-size: 1.4rem;">تطبيق حساسية ببجي</h1>
+    </div>
+    
+    <div class="main-card" onclick="showSection('generator')">
+        <div class="icon-box">⚡</div>
+        <h3>المولد الذكي</h3>
+        <p>احصل على كود حساسية مخصص لجهازك فوراً</p>
+    </div>
+
+    <div class="main-card" onclick="showSection('celebs')">
+        <div class="icon-box">🌟</div>
+        <h3>حساسيات المشاهير</h3>
+        <p>أكواد وإعدادات أفضل اللاعبين المحترفين</p>
+    </div>
+
+    <div class="main-card" onclick="showSection('tutorials')">
+        <div class="icon-box">📖</div>
+        <h3>شروحات تقليل الارتداد</h3>
+        <p>تعلم كيف تثبت الإيم مثل الهكر</p>
+    </div>
 </div>
 
-<div class="badges">
-<div class="badge">ذكاء متطور</div>
-<div class="badge">آمن 100%</div>
-<div class="badge">مخصص لك</div>
-</div>
-</div>
-
-<div class="card">
-<div class="section-title">إعدادات جهازك</div>
-
-<input class="input" id="device" placeholder="مثال: iPhone 15 Pro Max">
-
-<div class="row">
-<button class="btn os active" onclick="pick('os',this)">Android</button>
-<button class="btn os" onclick="pick('os',this)">iOS</button>
-</div>
-
-<div class="fps">
-<button class="btn fr">40</button>
-<button class="btn fr active">60</button>
-<button class="btn fr">90</button>
-<button class="btn fr">120</button>
-</div>
-
-<button class="main-btn" onclick="generateCode()">إنشاء كود الحساسية</button>
-
-<div class="result" id="resultBox">
-<div class="code-box" id="codeText"></div>
-<button class="copy" onclick="copyCode()">نسخ الكود</button>
-</div>
-
-</div>
-</div>
-
-<!-- المكتبة -->
-<div class="page" id="library">
-
-<div class="topbar">
-<div class="logo">المكتبة</div>
+<!-- 2. قسم المولد الذكي (كودك الأصلي) -->
+<div id="generator" class="app-section">
+    <div class="glacier-container">
+        <div class="header-box"><h1>مولد الأكواد الذكي</h1></div>
+        <div id="result-area">
+            <div class="loader" id="loading"></div>
+            <div id="final-code" style="color:#fff; font-size:1.4rem; font-weight:900; word-break: break-all;"></div>
+            <div onclick="copyText()" id="copy-btn">نسخ الكود</div>
+        </div>
+        <div>
+            <label class="step-label">1. اسم الجهاز:</label>
+            <input type="text" class="neo-input" id="deviceName" placeholder="مثلاً: iPhone 15">
+        </div>
+        <div>
+            <label class="step-label">2. النظام:</label>
+            <div class="system-grid">
+                <button class="system-btn s-opt active" onclick="pick('s-opt', this)">ANDROID</button>
+                <button class="system-btn s-opt" onclick="pick('s-opt', this)">IOS</button>
+            </div>
+        </div>
+        <div>
+            <label class="step-label">3. الفريمات:</label>
+            <div class="fps-bar">
+                <div class="fps-opt f-opt" onclick="pick('f-opt', this)">40</div>
+                <div class="fps-opt f-opt active" onclick="pick('f-opt', this)">60</div>
+                <div class="fps-opt f-opt" onclick="pick('f-opt', this)">90</div>
+                <div class="fps-opt f-opt" onclick="pick('f-opt', this)">120</div>
+            </div>
+        </div>
+        <button class="main-btn" onclick="generate()">إنشاء الكود</button>
+    </div>
 </div>
 
-<div class="card">
-<div class="section-title">مكتبة المشاهير الذهبية</div>
-
-<div class="library-list">
-
-<div class="player">
-<img src="https://i.imgur.com/W4KX9xw.png">
-<div class="player-info">
-<h3>مليون روسيس</h3>
-<p>Android • 4 أصابع</p>
-</div>
-<button class="small-btn" onclick="alert('4567-8901-2345')">نسخ</button>
+<!-- 3. قسم حساسيات المشاهير -->
+<div id="celebs" class="app-section">
+    <div class="header-box" style="width: 100%;"><h1>أكواد المشاهير</h1></div>
+    <div class="main-card" style="margin-top:20px;">
+        <h3>كود اللاعب "ابن سوريا"</h3>
+        <p>7350-2566-0703-9037-705</p>
+        <button class="main-btn" style="padding:10px; font-size:0.8rem;">نسخ كود المشهور</button>
+    </div>
+    <!-- يمكنك تكرار الكرت لكل مشهور -->
 </div>
 
-<div class="player">
-<img src="https://i.imgur.com/W4KX9xw.png">
-<div class="player-info">
-<h3>ابن سوريا</h3>
-<p>iPhone • 5 أصابع</p>
-</div>
-<button class="small-btn" onclick="alert('8811-2345-6789')">نسخ</button>
-</div>
-
-</div>
-</div>
-</div>
-
-<!-- الاعدادات -->
-<div class="page" id="settings">
-
-<div class="topbar">
-<div class="logo">الإعدادات</div>
-</div>
-
-<div class="card">
-<div class="settings-item">
-<span>الوضع الليلي</span>
-<span>ON</span>
-</div>
-
-<div class="settings-item">
-<span>الإشعارات</span>
-<span>ON</span>
-</div>
-
-<div class="settings-item">
-<span>الإصدار</span>
-<span>2026</span>
-</div>
-
-<div class="settings-item">
-<span>الدعم</span>
-<span>@YourName</span>
-</div>
-
-</div>
-</div>
-
-</div>
-
-<!-- الناف بار -->
-<div class="bottom-nav">
-<div class="nav-wrap">
-<button class="nav-btn active" onclick="openPage('home',this)">الرئيسية</button>
-<button class="nav-btn" onclick="openPage('library',this)">المكتبة</button>
-<button class="nav-btn" onclick="openPage('settings',this)">الإعدادات</button>
-</div>
+<!-- 4. قسم الشروحات -->
+<div id="tutorials" class="app-section">
+    <div class="header-box" style="width: 100%;"><h1>شروحات التثبيت</h1></div>
+    <div class="main-card" style="text-align: right; margin-top:20px;">
+        <h3 style="color: #00d2ff;">نصيحة #1: وضعية الجلوس</h3>
+        <p>الانحناء أثناء إطلاق النار يقلل الارتداد بنسبة 25%...</p>
+    </div>
 </div>
 
 <script>
-let lastCode="";
+    // وظيفة التنقل بين الأقسام
+    function showSection(id) {
+        document.querySelectorAll('.app-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        
+        // إظهار أو إخفاء زر العودة
+        document.getElementById('app-header').style.display = (id === 'home') ? 'none' : 'flex';
+        window.scrollTo(0,0);
+    }
 
-function pick(cls,el){
-document.querySelectorAll('.'+cls).forEach(x=>x.classList.remove('active'));
-el.classList.add('active');
-}
+    // وظائف أداتك الأصلية
+    let lastCode = ""; 
+    function pick(cls, el) {
+        document.querySelectorAll('.'+cls).forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+    }
 
-document.querySelectorAll('.fr').forEach(btn=>{
-btn.onclick=function(){
-document.querySelectorAll('.fr').forEach(x=>x.classList.remove('active'));
-this.classList.add('active');
-}
-});
+    async function generate() {
+        const dev = document.getElementById('deviceName');
+        if(!dev.value.trim()) { alert("أدخل اسم الجهاز"); return; }
+        
+        const resArea = document.getElementById('result-area');
+        const loader = document.getElementById('loading');
+        const output = document.getElementById('final-code');
+        const copyBtn = document.getElementById('copy-btn');
 
-function generateCode(){
-let arr=[
-"7048-7423-1526-2314",
-"5538-1477-9832-1004",
-"8274-2044-6144-9233",
-"9901-7311-5550-1177",
-"4367-1110-7771-9001"
-];
+        resArea.style.display = "block";
+        loader.style.display = "block";
+        output.innerText = ""; 
+        copyBtn.style.display = "none"; 
 
-let code="";
-do{
-code=arr[Math.floor(Math.random()*arr.length)];
-}while(code===lastCode);
+        setTimeout(async () => {
+            try {
+                const r = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vTRvEMgQkRx9FutTjTlG0_kv1WKg-b31QM1LibOvpbIFwoWEWgorHoGXiLEifh5a4bNwGXIUs0YHs3e/pub?gid=0&single=true&output=csv');
+                const d = await r.text();
+                let lines = d.split('\n').map(l => l.trim()).filter(l => l !== "" && !l.includes("كود"));
+                
+                if (lines.length > 0) {
+                    let newCode = lines[Math.floor(Math.random() * lines.length)];
+                    loader.style.display = "none";
+                    output.innerText = newCode;
+                    copyBtn.style.display = "inline-block"; 
+                }
+            } catch(e) {
+                loader.style.display = "none";
+                output.innerText = "7350-2566-0703-9037-705";
+                copyBtn.style.display = "inline-block";
+            }
+        }, 800);
+    }
 
-lastCode=code;
-document.getElementById("resultBox").style.display="block";
-document.getElementById("codeText").innerText=code;
-}
-
-function copyCode(){
-let t=document.getElementById("codeText").innerText;
-navigator.clipboard.writeText(t);
-alert("تم نسخ الكود");
-}
-
-function openPage(id,btn){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-
-document.querySelectorAll('.nav-btn').forEach(n=>n.classList.remove('active'));
-btn.classList.add('active');
-}
+    function copyText() {
+        const text = document.getElementById('final-code').innerText;
+        navigator.clipboard.writeText(text);
+        alert("تم النسخ!");
+    }
 </script>
-
 </body>
 </html>
